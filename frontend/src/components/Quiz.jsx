@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import questions from "../questions";
 import ProgressBar from './ProgressBar';
+import "../styles/quiz.css"
 
 const Quiz = () => {
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
+    const navigate=useNavigate();
 
     const handleAnswer = (selectedOption)=>{
         const updatedAnswers = {...answers, [currentQuestionIndex]: selectedOption};
@@ -28,7 +31,9 @@ const Quiz = () => {
             });
             const data= await response.json(); //parses the JSON response from the server.
             console.log("Server Response:", data.analysis);
-            console.log(`AI Analysis: ${data.analysis}`);
+            // console.log(`AI Analysis: ${data.analysis}`);
+
+            navigate("/result", {state: {analysis:data.analysis}}); 
         } catch (error){
             console.error("Error sending answers:", error);
         }
@@ -38,20 +43,39 @@ const Quiz = () => {
 
 
     return (
-        <div>
-            <h1>Quiz App</h1>
-            <ProgressBar progress={progress}/>
-            <h2>{questions[currentQuestionIndex].question}</h2>
-            <div>
-                {questions[currentQuestionIndex].options.map((option, index)=>(
-                    <button key={index} onClick={()=>handleAnswer(option)}>{option}</button>
-                ))}
-                <button onClick={()=>setCurrentQuestionIndex(currentQuestionIndex-1)} disabled={currentQuestionIndex===0}>Prev</button>
+    <div className="quiz-container">
+      <div className="quiz-box">
+        <h1 className="quiz-title">Quiz App</h1>
+        <ProgressBar progress={progress} />
 
-                {currentQuestionIndex < questions.length - 1 && (<button onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)}>Next</button>)}
-            </div>
+        <h2 className="quiz-question">{questions[currentQuestionIndex].question}</h2>
+
+        <div className="quiz-options">
+          {questions[currentQuestionIndex].options.map((option, index) => (
+            <button key={index} className="quiz-btn" onClick={() => handleAnswer(option)}>
+              {option}
+            </button>
+          ))}
         </div>
-    )
+
+        <div className="quiz-nav">
+          <button
+            onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)}
+            disabled={currentQuestionIndex === 0}
+            className={`quiz-btn ${currentQuestionIndex === 0 ? "disabled" : ""}`}
+          >
+            Prev
+          </button>
+
+          {currentQuestionIndex < questions.length - 1 && (
+            <button onClick={() => setCurrentQuestionIndex(currentQuestionIndex + 1)} className="quiz-btn">
+              Next
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Quiz;

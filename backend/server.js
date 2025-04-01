@@ -58,5 +58,10 @@ app.post("/submit-answers", async (req, res) => {
     }
 });
 
+app.get("/get-analysis", (req, res) => {
+    res.json({ analysis});
+});
+
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
