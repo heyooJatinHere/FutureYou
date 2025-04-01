@@ -7,7 +7,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'https://future-you-4th1.vercel.app/',
+  methods: 'GET,POST,PUT,DELETE',
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
