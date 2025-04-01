@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import questions from "../questions";
 import ProgressBar from './ProgressBar';
 import "../styles/quiz.css"
+import { API_BASE_URL } from '../config';
 
 const Quiz = () => {
 
@@ -24,7 +25,7 @@ const Quiz = () => {
 
     const sendAnswersToBackend = async(answers) =>{
         try{
-            const response = await fetch("https://future-you-wdyq.vercel.app/submit-answers", {
+            const response = await fetch(`${API_BASE_URL}/submit-answers`, {
                 method: "POST",
                 headers: {"Content-Type":"application/json"}, //Specifies that the data format is JSON
                 body: JSON.stringify(answers), //Converts the JavaScript object (answers) into a JSON string before sending
