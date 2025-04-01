@@ -24,7 +24,7 @@ const Quiz = () => {
 
     const sendAnswersToBackend = async(answers) =>{
         try{
-            const response = await fetch("http://localhost:5000/submit-answers", {
+            const response = await fetch("https://future-you-wdyq.vercel.app/submit-answers", {
                 method: "POST",
                 headers: {"Content-Type":"application/json"}, //Specifies that the data format is JSON
                 body: JSON.stringify(answers), //Converts the JavaScript object (answers) into a JSON string before sending
